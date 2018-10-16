@@ -2,42 +2,61 @@
 <script type="text/javascript" src="http://d3js.org/d3.v3.min.js"></script>
 <script type="text/javascript" src="http://mpld3.github.io/js/mpld3.v0.1.js"></script>
 <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
+<link rel="stylesheet" href="../static/style.css">
 
 <title>Car Dealership Dashboard</title>
-<div>
-  <h1>Total Profit:</h1>
-  <h2>{{profit}}</h2>
+<body>
   <div>
-    <table border="1px solid black">
-      <tr>
-        <th>Name:</th>
-        <th>Cars Sold:</th>
-        <th>Profit:</th>
-        <th>Commission:</th>
-      </tr>
-      {% for row in tableData: %}
-        <tr>
-          <td>{{row['name']}}</td>
-          <td>{{row['carsSold']}}</td>
-          <td>{{row['saleAmount']}}</td>
-          <td>{{row['commission']}}</td>
-        </tr>
-      {% endfor %}
-    </table>
-  </div>
-  <div>
-    <h3>Top 10 Manufacturers</h3>
-    <div id='fig1'></div>
+    <h1>Total Profit:</h1>
+    <h2>{{profit}}</h2>
     <div>
-      {{fig1}}
+      <table border="1px solid black">
+        <tr>
+          <th>Name:</th>
+          <th>Cars Sold:</th>
+          <th>Profit:</th>
+          <th>Commission:</th>
+        </tr>
+        {% for row in tableData: %}
+          <tr>
+            <td>{{row['name']}}</td>
+            <td>{{row['carsSold']}}</td>
+            <td>{{row['saleAmount']}}</td>
+            <td>{{row['commission']}}</td>
+          </tr>
+        {% endfor %}
+      </table>
+    </div>
+    <div class="chart">
+      <h3>Top 10 Manufacturers</h3>
+      <div id='fig1'></div>
+      <div class="makeNames">
+        {% for row in name: %}
+          <p>{{row}}</p>
+        {% endfor %}
+      </div>
+    </div>
+    <div class="chart chart2">
+      <h3>Top 10 Models</h3>
+      <div id='fig2'></div>
+      <div class="modelNames">
+        {% for row in name1: %}
+          <p>{{row}}</p>
+        {% endfor %}
+      </div>
     </div>
   </div>
-  <div>
-    <h3>Top 10 Models</h3>
-  </div>
-</div>
+</body>
 
-<!-- <script>
-  var fig1 = {{fig1}};
-  mpld3.draw_figure('fig1', fig1);
-</script> -->
+<script>
+  var fig1 = '{{fig1}}';
+  var fig2 = '{{fig2}}';
+
+  var makes = fig1.replace(/&#34;/g,'"');
+  var makesObject = JSON.parse(makes);
+  mpld3.draw_figure('fig1', makesObject);
+
+  var models = fig2.replace(/&#34;/g,'"');
+  var modelsObject = JSON.parse(models);
+  mpld3.draw_figure('fig2', modelsObject);
+</script>
