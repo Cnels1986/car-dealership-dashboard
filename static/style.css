@@ -1,0 +1,28 @@
+.makeNames{
+  transform: translate(288px, -225px) rotate(-90deg);
+  text-align: right;
+  z-index: 1000;
+  position: absolute;
+}
+.makeNames > p{
+  padding-top: 12px;
+}
+
+.modelNames{
+  transform: translate(288px, -220px) rotate(-90deg);
+  text-align: right;
+  z-index: 1000;
+  position: absolute;
+}
+.modelNames > p{
+  padding-top: 12px;
+}
+
+.chart{
+  position: absolute;
+  display: block;
+}
+
+.chart2{
+  transform: translate(0px, 666px);
+}

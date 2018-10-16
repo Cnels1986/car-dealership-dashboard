@@ -10,7 +10,7 @@ app = Flask(__name__)
 
 @app.route("/")
 def index():
-    return render_template('dashboard.html', profit=total_profit, tableData = sorted_chartData, fig1=fig1, fig2=fig2)
+    return render_template('dashboard.html', profit=total_profit, tableData = sorted_chartData, fig1=fig1, fig2=fig2, name=name, name1=name1)
 
 with open('sales_staff.json', 'r') as staffFile:
     staff = json.loads(staffFile.read())
@@ -83,13 +83,10 @@ for model in top10models:
 fig1, axs = plt.subplots()
 axs.bar(name, values)
 axs.set_ylabel('Number Sold')
-axs.set_xlabel('Models')
 axs.set_title('Top 10 Models Sold')
-plt.xticks(rotation=45)
+plt.xticks([])
 fig1.tight_layout()
 fig1 = json.dumps(mpld3.fig_to_dict(fig1))
-print(fig1)
-print("--------")
 
 name1 = []
 values1 = []
@@ -99,10 +96,7 @@ for make in top10makes:
 fig2, axs = plt.subplots()
 axs.bar(name1, values1)
 axs.set_ylabel('Number Sold')
-axs.set_xlabel('Makes')
-# axs.set_xticklabels(name1)
 axs.set_title('Top 10 Makes Sold')
-plt.xticks(rotation=45)
+plt.xticks([])
 fig2.tight_layout()
 fig2 = json.dumps(mpld3.fig_to_dict(fig2))
-print(fig2)
