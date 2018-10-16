@@ -1,19 +1,16 @@
 import matplotlib.pyplot as plt, mpld3
 from flask import Flask
 from flask import render_template
-import matplotlib
+import matplotlib, json, math, operator
 import numpy as np
-import json
 from re import sub
 from decimal import Decimal
-import math
-import operator
-#
-# app = Flask(__name__)
-#
-# @app.route("/")
-# def index():
-#     return render_template('dashboard.html', profit=total_profit, tableData = sorted_chartData)
+
+app = Flask(__name__)
+
+@app.route("/")
+def index():
+    return render_template('dashboard.html', profit=total_profit, tableData = sorted_chartData, fig1=fig1, fig2=fig2)
 
 with open('sales_staff.json', 'r') as staffFile:
     staff = json.loads(staffFile.read())
@@ -45,25 +42,6 @@ for person in staff:
 
 sorted_chartData = sorted(chartData, key=operator.itemgetter('carsSold'), reverse=True)
 # print(sorted_chartData)
-salesRankingSold = {}
-salesRankingAmount = {}
-salesRankingCommission = {}
-
-for rank in sorted_chartData:
-    names = rank['name']
-    salesRankingSold[name] = rank['carsSold']
-    salesRankingAmount[name] = rank['saleAmount']
-    salesRankingCommission[name] = rank['commission']
-
-names = list(salesRankingSold.keys())
-valuesSold = list(salesRankingSold.values())
-valuesAmount = list(salesRankingAmount.values())
-valuesCommission = list(salesRankingCommission.values())
-# print(names)
-# print(valuesSold)
-# print(valuesAmount)
-# print(valuesCommission)
-
 
 models = {}
 makes = {}
@@ -91,7 +69,6 @@ for sale in sales:
         models[model] = 1
 
 total_profit = '${:,.2f}'.format(total_profit)
-# print(total_profit)
 # creates sorted lists of the dictionaries, list contains tuples and is sorted by values
 makesSorted = sorted(makes.items(), key=operator.itemgetter(1), reverse=True)
 modelsSorted = sorted(models.items(), key=operator.itemgetter(1), reverse=True)
@@ -103,27 +80,29 @@ values = []
 for model in top10models:
     name.append(model[0])
     values.append(model[1])
-fig, axs = plt.subplots()
+fig1, axs = plt.subplots()
 axs.bar(name, values)
 axs.set_ylabel('Number Sold')
 axs.set_xlabel('Models')
 axs.set_title('Top 10 Models Sold')
 plt.xticks(rotation=45)
-fig.tight_layout()
-# mpld3.show()
-fig1 = mpld3.fig_to_html(fig)
+fig1.tight_layout()
+fig1 = json.dumps(mpld3.fig_to_dict(fig1))
 print(fig1)
+print("--------")
 
-# name1 = []
-# values1 = []
-# for make in top10makes:
-#     name1.append(make[0])
-#     values1.append(make[1])
-# fig, axs = plt.subplots()
-# axs.bar(name, values)
-# axs.set_ylabel('Number Sold')
-# axs.set_xlabel('Makes')
-# axs.set_title('Top 10 Makes Sold')
-# plt.xticks(rotation=45)
-# fig.tight_layout()
-# mpld3.show()
+name1 = []
+values1 = []
+for make in top10makes:
+    name1.append(make[0])
+    values1.append(make[1])
+fig2, axs = plt.subplots()
+axs.bar(name1, values1)
+axs.set_ylabel('Number Sold')
+axs.set_xlabel('Makes')
+# axs.set_xticklabels(name1)
+axs.set_title('Top 10 Makes Sold')
+plt.xticks(rotation=45)
+fig2.tight_layout()
+fig2 = json.dumps(mpld3.fig_to_dict(fig2))
+print(fig2)

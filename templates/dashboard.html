@@ -28,16 +28,22 @@
   <div>
     <h3>Top 10 Manufacturers</h3>
     <div id='fig1'></div>
-    <div>
-      {{fig1}}
-    </div>
   </div>
   <div>
     <h3>Top 10 Models</h3>
+    <div id='fig2'></div>
   </div>
 </div>
 
-<!-- <script>
-  var fig1 = {{fig1}};
-  mpld3.draw_figure('fig1', fig1);
-</script> -->
+<script>
+  var fig1 = '{{fig1}}';
+  var fig2 = '{{fig2}}';
+
+  var makes = fig1.replace(/&#34;/g,'"');
+  var makesObject = JSON.parse(makes);
+  mpld3.draw_figure('fig1', makesObject);
+
+  var models = fig2.replace(/&#34;/g,'"');
+  var modelsObject = JSON.parse(models);
+  mpld3.draw_figure('fig2', modelsObject);
+</script>
